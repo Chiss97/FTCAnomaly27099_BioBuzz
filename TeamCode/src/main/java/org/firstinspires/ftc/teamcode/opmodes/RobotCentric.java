@@ -62,6 +62,13 @@ public class RobotCentric extends BaseTeleOp{
             else{
                 intake.stop();
             }
+
+            //<editor-fold desc="Telemetry">
+            telemetry.addData("Raw LX", gamepad1.left_stick_x);
+            telemetry.addData("Raw LY", gamepad1.left_stick_y);
+            telemetry.addData("Raw RX", gamepad1.right_stick_x);
+            telemetry.update();
+            //</editor-fold>
         }
 
     }

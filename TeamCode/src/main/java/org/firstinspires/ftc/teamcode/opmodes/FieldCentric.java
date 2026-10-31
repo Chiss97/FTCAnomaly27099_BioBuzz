@@ -87,6 +87,9 @@ public class FieldCentric extends BaseTeleOp{
 
             //<editor-fold desc="Telemetry">
             telemetry.addData("Heading (deg)", Math.toDegrees(heading));
+            telemetry.addData("Raw LX", gamepad1.left_stick_x);
+            telemetry.addData("Raw LY", gamepad1.left_stick_y);
+            telemetry.addData("Raw RX", gamepad1.right_stick_x);
             telemetry.update();
             //</editor-fold>
 
