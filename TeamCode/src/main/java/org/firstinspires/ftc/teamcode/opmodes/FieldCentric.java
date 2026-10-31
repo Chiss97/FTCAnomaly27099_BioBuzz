@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.util.DriveInputFilter;
 
 
@@ -36,12 +37,12 @@ public class FieldCentric extends BaseTeleOp{
             //<editor-fold desc="Drivetrain">
             double rawHeading = pinpoint.getPosition().getHeading(AngleUnit.RADIANS);
 
-            //press BACK to make the current direction forward
+            //press back to make the current direction forward
             if (controller1.getButton(GamepadKeys.Button.BACK)) {
                 headingOffset = rawHeading;
             }
             double heading = rawHeading - headingOffset;
-            double ly = smoother.shape(-controller1.getLeftY());
+            double ly = smoother.shape(controller1.getLeftY());
             double lx = smoother.shape(controller1.getLeftX());
             double rx = smoother.shape(controller1.getRightX());
 
@@ -90,6 +91,8 @@ public class FieldCentric extends BaseTeleOp{
             telemetry.addData("Raw LX", gamepad1.left_stick_x);
             telemetry.addData("Raw LY", gamepad1.left_stick_y);
             telemetry.addData("Raw RX", gamepad1.right_stick_x);
+            telemetry.addData("X (in)", pinpoint.getPosition().getX(DistanceUnit.MM));
+            telemetry.addData("Y (in)", pinpoint.getPosition().getY(DistanceUnit.MM));
             telemetry.update();
             //</editor-fold>
 

@@ -27,7 +27,7 @@ public class RobotCentric extends BaseTeleOp{
             updateInputs();
 
             //<editor-fold desc="Drivetrain">
-            double ly = smoother.shape(-controller1.getLeftY());
+            double ly = smoother.shape(controller1.getLeftY());
             double lx = smoother.shape(controller1.getLeftX());
             double rx = smoother.shape(controller1.getRightX());
 
