@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.Intake;
 public class Hardware {
     public DcMotorEx frontLeft, frontRight, backLeft, backRight, intakeMotor; //outtakeMotor;
     public Intake robotIntake;
-    public GoBildaPinpointDriver pinpoint;
+    public GoBildaPinpointDriver robotPinpoint;
 
     // Init hardwareMaps
     public  Hardware(HardwareMap hardwareMap) {
@@ -40,13 +40,16 @@ public class Hardware {
 
         robotIntake = new Intake(intakeMotor);
 
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
-        pinpoint.setEncoderDirections(
+        robotPinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        robotPinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
+        robotPinpoint.setEncoderDirections(
                 GoBildaPinpointDriver.EncoderDirection.FORWARD,//TODO
                 GoBildaPinpointDriver.EncoderDirection.FORWARD);//TODO
-        pinpoint.setOffsets(0, 0, DistanceUnit.MM);
-        pinpoint.resetPosAndIMU();
+        robotPinpoint.setOffsets(0, 0, DistanceUnit.MM);
+        robotPinpoint.resetPosAndIMU();
 
+        for (LynxModule hub : hardwareMap.getAll(LynxModule.class)) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
     }
 }

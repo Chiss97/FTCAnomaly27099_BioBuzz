@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.util.DriveInputFilter;
+import org.firstinspires.ftc.teamcode.util.Timer;
 
 
 @TeleOp(name = "FieldCentric TeleOp", group = "TeleOp")
@@ -23,10 +24,11 @@ public class FieldCentric extends BaseTeleOp{
 
         // wait for user to press start button
         waitForStart();
+        Timer.start();
         smoother.reset();
 
         //whatever way the robot faces at start counts as forward
-        pinpoint.update();
+        pinpoint.update(GoBildaPinpointDriver.ReadData.ONLY_UPDATE_HEADING);
         headingOffset = pinpoint.getPosition().getHeading(AngleUnit.RADIANS);
 
         // start OpMode loop
@@ -69,10 +71,8 @@ public class FieldCentric extends BaseTeleOp{
                     Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower)),
                     Math.max(Math.abs(backLeftPower), Math.abs(backRightPower))));
 
-            robotHardware.frontLeft.setPower(frontLeftPower / maxPower);
-            robotHardware.frontRight.setPower(frontRightPower / maxPower);
-            robotHardware.backLeft.setPower(backLeftPower / maxPower);
-            robotHardware.backRight.setPower(backRightPower / maxPower);
+            setDrivePowers(frontLeftPower / maxPower, frontRightPower / maxPower,
+                    backLeftPower / maxPower, backRightPower / maxPower);
             //</editor-fold>
 
             if (lt1Reader.isDown()) {
@@ -87,12 +87,8 @@ public class FieldCentric extends BaseTeleOp{
 
 
             //<editor-fold desc="Telemetry">
+            addLoopTimeTelemetry();
             telemetry.addData("Heading (deg)", Math.toDegrees(heading));
-            telemetry.addData("Raw LX", gamepad1.left_stick_x);
-            telemetry.addData("Raw LY", gamepad1.left_stick_y);
-            telemetry.addData("Raw RX", gamepad1.right_stick_x);
-            telemetry.addData("X (in)", pinpoint.getPosition().getX(DistanceUnit.MM));
-            telemetry.addData("Y (in)", pinpoint.getPosition().getY(DistanceUnit.MM));
             telemetry.update();
             //</editor-fold>
 
